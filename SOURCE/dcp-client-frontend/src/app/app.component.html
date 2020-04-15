@@ -1,0 +1,52 @@
+<div class="data">
+    <div class="networks">
+        <div
+            *ngFor="let network of networks"
+            class="network"
+            (click)="selectedNetwork = network"
+            [class.selected]="network === selectedNetwork"
+        >
+            {{network.name}}
+        </div>
+    </div>
+    <div class="vertical-line"></div>
+    <div class="network-detail" *ngIf="selectedNetwork">
+        <div class="network-detail-header">
+            <h2>{{selectedNetwork.name}}</h2>
+        </div>
+
+        <div class="network-detail-body">
+            <div class="devices">
+                <div
+                    *ngFor="let device of selectedNetwork.devices"
+                    (click)="selectedDevice = device"
+                    class="device"
+                    [class.selected]="selectedDevice === device"
+                >
+                    {{device.name}}
+                </div>
+            </div>
+            <div class="device-info">
+                <div *ngIf="selectedDevice">
+                    <div class="device-info-header">
+                        <h3>Geräteinformationen</h3>
+                    </div>
+                    <div class="device-info-body">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td>Gerätename:</td>
+                                <td>{{selectedDevice.name}}</td>
+                            </tr>
+                            <tr>
+                                <td>Geräte-IP:</td>
+                                <td>{{selectedDevice.ip}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

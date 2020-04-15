@@ -1,0 +1,73 @@
+.data {
+    width: calc(100% - 2rem);
+    height: calc(100% - 2rem);
+    display: flex;
+    padding: 1rem;
+}
+
+.networks {
+    display: flex;
+    flex-direction: column;
+    padding-right: 1rem;
+    border-right: black 1px solid;
+    height: 100%;
+    width: 16rem;
+}
+
+.network {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: black 1px solid;
+}
+
+.selected {
+    color: #72c176;
+}
+
+.network-detail {
+    width: 80%;
+    overflow: hidden;
+    padding-left: 1rem;
+}
+
+.network-detail-header {
+    text-align: center;
+    border-bottom: black 1px solid;
+    padding: 1rem;
+
+    > h2 {
+        margin: 0;
+    }
+}
+
+.network-detail-body {
+    display: flex;
+    height: 100%;
+}
+
+.devices {
+    height: calc(100% - 6rem);
+    padding: 0 1rem 1rem 0;
+    border-right: black 1px solid;
+    margin: 1rem 0;
+}
+
+.device {
+    text-align: center;
+    padding: 1rem 0 1rem 0;
+    border-bottom: black 1px solid;
+    margin: 1rem 0 1rem 0;
+    width: 12rem;
+}
+
+.device-info {
+    width: 100%;
+}
+
+.device-info-header {
+    text-align: center;
+}
+
+.device-info-body {
+    padding: 1rem 1rem 1rem 2rem;
+}
