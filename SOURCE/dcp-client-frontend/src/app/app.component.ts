@@ -46,4 +46,15 @@ export class AppComponent implements OnInit {
             this.selectedDevice = info;
         }, error => window.alert('Es hab einen Fehler!!!'));
     }
+
+    /**
+     * Makes refresh request to backend. When it completes it refreshes the device list.
+     */
+    public refresh(): void {
+        this.devicesLoading = true;
+        this.deviceService.refresh().subscribe(() => {
+            this.devicesLoading = false;
+            this.refreshList();
+        }, error => window.alert('Es hab einen Fehler!!!'));
+    }
 }

@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {from, Observable} from 'rxjs';
+import {from, Observable, of, throwError} from 'rxjs';
 import {Device} from '../entities/device';
 import {DeviceInfo} from '../entities/device-info';
 import {environment} from '../../environments/environment';
-import {map, switchMap, toArray} from 'rxjs/operators';
+import {catchError, map, switchMap, toArray} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class DeviceService {
@@ -21,6 +21,14 @@ export class DeviceService {
                 switchMap(devices => from(devices)),
                 map(device => ({name: device.nameOfStation, ip: device.ip_addr})),
                 toArray(),
+                catchError(error => {
+                    /*return of([
+                        {name: 'Device 1', ip: '192.168.2.2'},
+                        {name: 'Device 2', ip: '192.168.2.3'},
+                        {name: 'Device 3', ip: '192.168.2.4'},
+                    ]);*/
+                    return throwError(error);
+                })
             );
     }
 
@@ -45,7 +53,22 @@ export class DeviceService {
                     subnetMask: device2.subnetmask,
                     vendorValue: device2.vendorValue,
                     deviceRole: device2.deviceRole
-                }))
+                })),
+                catchError(error => {
+                    if (error.status === 0) {
+                        /*return of({
+                            name: device.name,
+                            ip: device.ip,
+                            mac: '23:23:23:23:23',
+                            subnetMask: '255.255.255.0',
+                            vendorValue: '',
+                            deviceRole: ''
+                        });*/
+                        return throwError(error);
+                    } else {
+                        return throwError(error);
+                    }
+                })
             );
     }
 
