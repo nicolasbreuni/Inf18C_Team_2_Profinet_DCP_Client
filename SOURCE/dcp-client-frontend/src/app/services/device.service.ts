@@ -76,6 +76,6 @@ export class DeviceService {
      * Makes http call to refresh device list in backend.
      */
     public refresh(): Observable<null> {
-        return this.httpClient.get<null>(`${environment.apiUrl}devices/refresh`);
+        return this.httpClient.get<null>(`${environment.apiUrl}devices/refresh`).pipe(catchError(error => of(null)));
     }
 }
