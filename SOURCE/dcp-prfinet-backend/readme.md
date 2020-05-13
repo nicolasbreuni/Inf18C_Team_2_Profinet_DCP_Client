@@ -10,3 +10,8 @@ node-red asuführen / oder installieren
 hierzu folgen sie: https://nodered.org/docs/getting-started/local
 
 node-red-backend-flow in Node-red importieren. 
+
+
+Test:
+Die Tests finden gesammelt aus dem frontend Ordner statt mit dem Befehl:
+"npm run backend-test"
