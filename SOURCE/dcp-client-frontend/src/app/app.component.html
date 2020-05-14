@@ -23,7 +23,7 @@
                     </tr>
                     <tr>
                         <td id="deviceIP">Geräte-IP:</td>
-                        <td>{{selectedDevice.ip}}</td>
+                        <td><a target="_blank" [href]="'http://' + selectedDevice.ip">{{selectedDevice.ip}}</a></td>
                     </tr>
                     <tr>
                         <td id="mac">Mac:</td>
