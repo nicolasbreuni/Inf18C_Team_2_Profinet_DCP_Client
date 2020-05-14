@@ -2,16 +2,50 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { Observable, of } from 'rxjs';
+import { Device } from './entities/device';
+import { DeviceInfo } from './entities/device-info';
+import { DeviceService } from './services/device.service';
+
+class MockDeviceService {
+  public getDeviceList(): Observable<Device[]> {
+    return of([
+      {name: 'Device 1', ip: '192.168.2.2'},
+      {name: 'Device 2', ip: '192.168.2.3'},
+      {name: 'Device 3', ip: '192.168.2.4'},
+  ]);
+  }
+
+  public getDevice(device: Device): Observable<DeviceInfo> {
+    return of({
+      name: device.name,
+      ip: device.ip,
+      mac: '23:23:23:23:23',
+      subnetMask: '255.255.255.0',
+      vendorValue: '',
+      deviceRole: ''
+  });
+  }
+  
+  public refresh(): Observable<null> {
+    return of(null);
+  }  
+}
 
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let de: DebugElement;
+  let deviceService: MockDeviceService;
 
   beforeEach(async(() => {
+    deviceService = new MockDeviceService();
     TestBed.configureTestingModule({
       declarations: [
         AppComponent
+      ],
+      providers: [
+        {provide: DeviceService, useValue: deviceService}
       ],
     }).compileComponents();
   }));
@@ -20,7 +54,7 @@ describe('AppComponent', () => {
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
-
+    
     fixture.detectChanges();
   });
 
@@ -32,65 +66,43 @@ describe('AppComponent', () => {
     expect(component.title).not.toBeNull();
   });
 
-  it('should open the network details after click', () => {
-    const network1 = de.query(By.css('.network'));
-    expect(network1).not.toBeNull();
+  it('should refresh', () => {
+    spyOn(deviceService, 'refresh').and.returnValue(of(null));
+    const refreshButton = de.query(By.css('.refresh-button img'));
+    expect(refreshButton).not.toBeNull();
 
-    network1.nativeElement.click();
+    refreshButton.nativeElement.click();
     fixture.detectChanges();
-    expect(de.query(By.css('.network-detail'))).not.toBeNull();
+
+    expect(deviceService.refresh).toHaveBeenCalled();
   });
 
-  it('should have a device list in the network details', () => {
-    const network1 = de.query(By.css('.network'));
-    expect(network1).not.toBeNull();
+  it('should open the device information after click', () => {
+    const device = de.query(By.css('.device'));
+    expect(device).not.toBeNull();
 
-    network1.nativeElement.click();
+    device.nativeElement.click();
     fixture.detectChanges();
-    expect(de.query(By.css('.devices'))).not.toBeNull();
+
+    expect(de.query(By.css('.device-info'))).not.toBeNull();
   });
 
-  it('should have the correct title', () => {
-    const network1 = de.query(By.css('.network'));
-    expect(network1).not.toBeNull();
+  it('should have the correct title in device info', () => {
+    const device = de.query(By.css('.device'));
+    expect(device).not.toBeNull();
 
-    network1.nativeElement.click();
+    device.nativeElement.click();
     fixture.detectChanges();
 
-    const title = de.query(By.css('h2'));
-    expect(title.nativeElement.innerText).toEqual(network1.nativeElement.innerText);
-  });
-
-  it('should have a title in the device list', () => {
-    const network1 = de.query(By.css('.network'));
-    expect(network1).not.toBeNull();
-    
-
-    network1.nativeElement.click();
-    fixture.detectChanges();
-
-    const device1 = de.query(By.css('.device'));
-    expect(device1).not.toBeNull();
-
-    device1.nativeElement.click();
-    fixture.detectChanges();
-
-    const title = de.query(By.css('h3'));
+    const title = de.query(By.css('.device-info-header h3'));
     expect(title.nativeElement.innerText).toEqual('Geräteinformationen');
   });
 
   it('should have a device name', () => {
-    const network1 = de.query(By.css('.network'));
-    expect(network1).not.toBeNull();
-    
+    const device = de.query(By.css('.device'));
+    expect(device).not.toBeNull();   
 
-    network1.nativeElement.click();
-    fixture.detectChanges();
-
-    const device1 = de.query(By.css('.device'));
-    expect(device1).not.toBeNull();
-    
-    device1.nativeElement.click();
+    device.nativeElement.click();
     fixture.detectChanges();
 
     const deviceName = de.query(By.css('#deviceName'));
@@ -98,21 +110,58 @@ describe('AppComponent', () => {
   });
 
   it('should have a device ip', () => {
-    const network1 = de.query(By.css('.network'));
-    expect(network1).not.toBeNull();
-    
+    const device = de.query(By.css('.device'));
+    expect(device).not.toBeNull(); 
 
-    network1.nativeElement.click();
-    fixture.detectChanges();
-
-    const device1 = de.query(By.css('.device'));
-    expect(device1).not.toBeNull();
-    
-    device1.nativeElement.click();
+    device.nativeElement.click();
     fixture.detectChanges();
 
     const deviceIP = de.query(By.css('#deviceIP'));
     expect(deviceIP.nativeElement.innerText).toEqual('Geräte-IP:');
+  });
+
+  it('should have a device mac adress', () => {
+    const device = de.query(By.css('.device'));
+    expect(device).not.toBeNull();   
+
+    device.nativeElement.click();
+    fixture.detectChanges();
+
+    const mac = de.query(By.css('#mac'));
+    expect(mac.nativeElement.innerText).toEqual('Mac:');
+  });
+
+  it('should have a device subnet mask', () => {
+    const device = de.query(By.css('.device'));
+    expect(device).not.toBeNull(); 
+
+    device.nativeElement.click();
+    fixture.detectChanges();
+
+    const subnetMask = de.query(By.css('#subnetMask'));
+    expect(subnetMask.nativeElement.innerText).toEqual('Subnet Mask:');
+  });
+
+  it('should have a device vendor value', () => {
+    const device = de.query(By.css('.device'));
+    expect(device).not.toBeNull(); 
+
+    device.nativeElement.click();
+    fixture.detectChanges();
+
+    const vendorValue = de.query(By.css('#vendorValue'));
+    expect(vendorValue.nativeElement.innerText).toEqual('Vendor Wert:');
+  });
+
+  it('should have a device role', () => {
+    const device = de.query(By.css('.device'));
+    expect(device).not.toBeNull();
+
+    device.nativeElement.click();
+    fixture.detectChanges();
+
+    const deviceRole = de.query(By.css('#deviceRole'));
+    expect(deviceRole.nativeElement.innerText).toEqual('Geräterolle:');
   });
 
 });
