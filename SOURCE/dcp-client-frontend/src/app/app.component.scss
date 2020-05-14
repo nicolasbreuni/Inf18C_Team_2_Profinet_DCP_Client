@@ -5,7 +5,7 @@
     padding: 1rem;
 }
 
-.networks {
+.devices {
     display: flex;
     flex-direction: column;
     padding-right: 1rem;
@@ -14,7 +14,7 @@
     width: 16rem;
 }
 
-.network {
+.device {
     padding: 1rem;
     text-align: center;
     border-bottom: black 1px solid;
@@ -22,42 +22,6 @@
 
 .selected {
     color: #72c176;
-}
-
-.network-detail {
-    width: 80%;
-    overflow: hidden;
-    padding-left: 1rem;
-}
-
-.network-detail-header {
-    text-align: center;
-    border-bottom: black 1px solid;
-    padding: 1rem;
-
-    > h2 {
-        margin: 0;
-    }
-}
-
-.network-detail-body {
-    display: flex;
-    height: 100%;
-}
-
-.devices {
-    height: calc(100% - 6rem);
-    padding: 0 1rem 1rem 0;
-    border-right: black 1px solid;
-    margin: 1rem 0;
-}
-
-.device {
-    text-align: center;
-    padding: 1rem 0 1rem 0;
-    border-bottom: black 1px solid;
-    margin: 1rem 0 1rem 0;
-    width: 12rem;
 }
 
 .device-info {
@@ -70,4 +34,46 @@
 
 .device-info-body {
     padding: 1rem 1rem 1rem 2rem;
+}
+
+.loading-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.lds-dual-ring {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+}
+.lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid #fff;
+    border-color: #000 transparent #000 transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.refresh-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
 }
