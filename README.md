@@ -40,7 +40,7 @@ Run the powershell install script
 
 ### Manual installation:
 
-Move the Profinet-backend foldern to C://
+Move the Profinet-backend folder to C://
 
 Run node-red.
 To install node-red follow this guide:
